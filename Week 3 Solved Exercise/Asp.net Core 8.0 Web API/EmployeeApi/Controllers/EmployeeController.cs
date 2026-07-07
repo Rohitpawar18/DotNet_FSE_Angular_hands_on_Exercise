@@ -7,7 +7,7 @@ namespace EmployeeApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [CustomAuthFilter]
+    //[CustomAuthFilter]
     public class EmployeeController : ControllerBase
     {
         private readonly List<Employee> _employees;
@@ -101,10 +101,15 @@ namespace EmployeeApi.Controllers
         [ProducesResponseType(404)]
         public ActionResult Put(int id, [FromBody] Employee employee)
         {
+            if(id <= 0)
+            {
+                return BadRequest("Invalid employee ID");
+            }
+
             var existing = _employees.FirstOrDefault(e => e.Id == id);
             if(existing == null)
             {
-                return NotFound();
+                return BadRequest("Invalid employee ID");
             }
 
             existing.Name = employee.Name;
@@ -114,7 +119,8 @@ namespace EmployeeApi.Controllers
             existing.Skills = employee.Skills;
             existing.DateOfBirth = employee.DateOfBirth;
 
-            return NoContent();
+            var updatedEmployee = _employees.FirstOrDefault(e => e.Id == id);
+            return Ok(updatedEmployee);
         }
     }
 }

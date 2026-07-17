@@ -1,0 +1,42 @@
+PROJECT FILE EXPLANATIONS
+========================
+
+1. angular.json
+   - Main configuration file for the Angular project
+   - Defines build, serve, test, and lint configurations
+   - Specifies project structure, assets, and output paths
+
+2. tsconfig.json
+   - TypeScript compiler configuration for the entire workspace
+   - Controls how TypeScript is compiled to JavaScript
+   - Defines strict mode, module resolution, and library files
+
+3. tsconfig.app.json
+   - Application-specific TypeScript configuration
+   - Extends tsconfig.json with app-only settings
+   - Includes app source files and excludes test files
+
+4. package.json
+   - Lists all project dependencies and dev dependencies
+   - Defines npm scripts (ng serve, ng build, ng test)
+   - Specifies Node.js and npm version requirements
+
+5. src/main.ts
+   - The application entry point that runs first
+   - Bootstraps the root component (AppComponent) using bootstrapApplication
+   - Imports and configures the app.config.ts (standalone mode)
+
+6. src/app/app.config.ts (or app.module.ts in NgModule mode)
+   - Contains provider configuration for the standalone app
+   - Sets up Angular platform features like routing, HTTP, forms
+   - In NgModule mode, it would declare and import modules
+
+7. src/app/app.component.ts
+   - The root component that wraps the entire application
+   - Contains the main template and styles for the app
+   - Acts as the parent container for all other components
+
+8. src/index.html
+   - The single HTML file served by the browser
+   - Contains <app-root></app-root> where Angular mounts the app
+   - Can include global meta tags, stylesheets, and scripts

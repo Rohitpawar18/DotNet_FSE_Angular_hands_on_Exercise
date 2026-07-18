@@ -18,6 +18,7 @@ interface Course {
   styleUrl: './course-list.css',
 })
 export class CourseList implements OnInit, OnDestroy {
+  isLoading = true;
   courses: Course[] = [
     {
       id: 1,
@@ -65,6 +66,11 @@ export class CourseList implements OnInit, OnDestroy {
   ngOnInit(): void {
     console.log('CourseListComponent initialised');
     console.log(`Loaded ${this.courses.length} courses`);
+
+    setTimeout(() => {
+      console.log('Loading complete - showing course list');
+      this.isLoading = false;
+    }, 1500);
   }
 
   ngOnDestroy(): void {
@@ -80,5 +86,9 @@ export class CourseList implements OnInit, OnDestroy {
     if (enrolledCourse) {
       console.log(`Successfully enrolled in: ${enrolledCourse.name}`);
     }
+  }
+
+  trackByCourseId(index: number, course: Course): number {
+    return course.id;
   }
 }

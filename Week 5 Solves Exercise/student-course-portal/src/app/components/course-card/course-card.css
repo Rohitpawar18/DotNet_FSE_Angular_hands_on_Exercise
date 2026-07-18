@@ -1,22 +1,93 @@
+/* ============ CARD CONTAINER ============ */
+
 .course-card {
   background: white;
   border: 2px solid #e0e0e0;
+  border-left: 5px solid #e0e0e0;
   border-radius: 8px;
   overflow: hidden;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
 }
 
 .course-card:hover {
   border-color: #3498db;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
 }
+
+/* ============ NGCLASS CONDITIONAL STYLING ============ */
+
+/**
+ * CARD--ENROLLED CLASS
+ * Applied when course has been enrolled via [ngClass]="{ 'card--enrolled': isEnrolled() }"
+ * 
+ * In this demo, we'll manually add the class to show the effect
+ * In real app, this would toggle based on enrollment service
+ */
+.course-card.card--enrolled {
+  background: linear-gradient(135deg, #d4edda 0%, #ffffff 100%);
+  border-left-color: #28a745;
+}
+
+.course-card.card--enrolled::before {
+  content: '✅ ENROLLED';
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #28a745;
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+/**
+ * CARD--FULL CLASS
+ * Applied when credits >= 4 via [ngClass]="{ 'card--full': course?.credits >= 4 }"
+ * Shows visual indicator for high-credit courses
+ */
+.course-card.card--full .card-header {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  position: relative;
+}
+
+.course-card.card--full .card-header::after {
+  content: '⭐ 4+ Credits';
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  color: white;
+}
+
+/**
+ * EXPANDED CLASS
+ * Applied when isExpanded = true
+ * Increases card height and changes appearance
+ */
+.course-card.expanded {
+  height: auto;
+  background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
+}
+
+.course-card.expanded .card-details {
+  max-height: 500px;
+}
+
+/* ============ CARD HEADER ============ */
 
 .card-header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   padding: 1rem;
+  position: relative;
 }
 
 .card-header h3 {
@@ -24,8 +95,13 @@
   font-size: 1.3rem;
 }
 
+/* ============ CARD BODY ============ */
+
 .card-body {
   padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .card-body p {
@@ -33,12 +109,15 @@
   color: #555;
 }
 
+/* ============ TEXT STYLING ============ */
+
 .code {
   background: #f0f0f0;
   padding: 0.3rem 0.6rem;
   border-radius: 3px;
   font-family: monospace;
   font-weight: bold;
+  color: #333;
 }
 
 .credits {
@@ -49,6 +128,8 @@
   color: #3498db;
 }
 
+/* ============ GRADE STATUS & BADGES (ngSwitch) ============ */
+
 .grade-status {
   margin-top: 1rem;
   padding-top: 1rem;
@@ -57,52 +138,95 @@
 
 .badge {
   display: inline-block;
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
   font-weight: bold;
   font-size: 0.85rem;
+  margin-left: 0.5rem;
 }
 
-.badge.passed {
+/**
+ * NGSWITCH CASES - Different badge styles per status
+ * Applied via *ngSwitchCase in template
+ */
+
+.badge-passed {
   background-color: #d4edda;
   color: #155724;
   border: 1px solid #c3e6cb;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
 }
 
-.badge.failed {
+.badge-failed {
   background-color: #f8d7da;
   color: #721c24;
   border: 1px solid #f5c6cb;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
 }
 
-.badge.pending {
+.badge-pending {
   background-color: #fff3cd;
   color: #856404;
   border: 1px solid #ffeaa7;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
 }
 
-.card-empty {
-  background: #f0f0f0;
-  padding: 2rem;
-  text-align: center;
-  color: #999;
-  border-radius: 8px;
+.badge-default {
+  background-color: #e2e3e5;
+  color: #383d41;
+  border: 1px solid #d6d8db;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
 }
 
-/* ============ ENROLL BUTTON ============ */
+/* ============ EXPANDED DETAILS SECTION ============ */
 
-.btn-enroll {
-  width: 100%;
+.card-details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  background: #f8f9fa;
+  margin: 0 -1.5rem -1.5rem -1.5rem;
+  padding: 1.5rem;
+}
+
+.card-details hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 0 0 1rem 0;
+}
+
+.card-details p {
+  margin: 0.8rem 0;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+/* ============ ACTION BUTTONS ============ */
+
+.card-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid #ddd;
+}
+
+button {
+  flex: 1;
   padding: 0.75rem 1rem;
-  margin-top: 1rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
   border: none;
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s;
+}
+
+.btn-enroll {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
 }
 
 .btn-enroll:hover {
@@ -112,4 +236,27 @@
 
 .btn-enroll:active {
   transform: scale(0.98);
+}
+
+.btn-details {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 2px solid #ddd;
+  transition: all 0.3s;
+}
+
+.btn-details:hover {
+  background-color: #e0e0e0;
+  border-color: #3498db;
+  color: #3498db;
+}
+
+/* ============ EMPTY STATE ============ */
+
+.card-empty {
+  background: #f0f0f0;
+  padding: 2rem;
+  text-align: center;
+  color: #999;
+  border-radius: 8px;
 }

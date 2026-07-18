@@ -1,0 +1,19 @@
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'creditLabel',
+  standalone: true,
+})
+export class CreditLabelPipe implements PipeTransform {
+  transform(value: number | null | undefined): string {
+    if (!value || value === 0) {
+      return 'No Credits';
+    }
+
+    if (value === 1) {
+      return `${value} Credit`;
+    }
+
+    return `${value} Credits`;
+  }
+}

@@ -16,6 +16,47 @@ h2 {
   font-size: 1rem;
 }
 
+/* ============ LOADING STATE STYLING ============ */
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  min-height: 400px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 8px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.loading-text {
+  color: #2c3e50;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+/* ============ SPINNER ANIMATION ============ */
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /* ============ COURSES GRID ============ */
 
 .courses-grid {
@@ -23,6 +64,25 @@ h2 {
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 2rem;
   margin-bottom: 2rem;
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* ============ EMPTY STATE ============ */
+
+.no-courses-message {
+  background: #fff3cd;
+  border: 2px solid #ffc107;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  color: #856404;
+  font-size: 1.1rem;
+  font-weight: bold;
+  animation: slideIn 0.3s ease-out;
+}
+
+.no-courses-message p {
+  margin: 0.5rem 0;
 }
 
 /* ============ SELECTION INFO ============ */
@@ -61,6 +121,15 @@ h2 {
 }
 
 /* ============ ANIMATIONS ============ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
 @keyframes slideIn {
   from {

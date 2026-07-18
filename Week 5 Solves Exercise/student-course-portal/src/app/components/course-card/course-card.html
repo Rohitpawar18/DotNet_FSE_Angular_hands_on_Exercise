@@ -1,22 +1,52 @@
-<div class="course-card" *ngIf="course">
+<div
+  class="course-card"
+  *ngIf="course"
+  [ngClass]="cardClasses"
+  [ngStyle]="{ 'border-left-color': statusColor }"
+  appHighlight="lightcyan"
+>
   <div class="card-header">
     <h3>{{ course.name }}</h3>
   </div>
+
   <div class="card-body">
     <p>
       <strong>Course Code:</strong> <span class="code">{{ course.code }}</span>
     </p>
+
     <p>
-      <strong>Credits:</strong> <span class="credits">{{ course.credits }}</span>
+      <strong>Credits:</strong> <span class="credits">{{ course.credits | creditLabel }}</span>
     </p>
+
+    <!-- Grade status with ngSwitch (from Task 2) -->
     <p *ngIf="course.gradeStatus" class="grade-status">
       <strong>Status:</strong>
-      <span class="badge" [ngClass]="course.gradeStatus">
-        {{ course.gradeStatus | uppercase }}
+      <span class="badge" [ngSwitch]="course.gradeStatus">
+        <span *ngSwitchCase="'passed'" class="badge-passed">✅ PASSED</span>
+        <span *ngSwitchCase="'failed'" class="badge-failed">❌ FAILED</span>
+        <span *ngSwitchCase="'pending'" class="badge-pending">⏳ PENDING</span>
+        <span *ngSwitchDefault class="badge-default">❓ UNKNOWN</span>
       </span>
     </p>
 
-    <button (click)="onEnrollClick()" class="btn-enroll">Enroll Now</button>
+    <!-- Expanded details (from Task 2) -->
+    <div class="card-details" *ngIf="isExpanded">
+      <hr />
+      <p><strong>Enrollment Status:</strong> Available for enrollment</p>
+      <p><strong>Semester:</strong> Fall 2024</p>
+      <p><strong>Instructor:</strong> Prof. Jane Doe</p>
+      <p><strong>Meeting Time:</strong> MWF 10:00 AM - 11:30 AM</p>
+      <p><strong>Location:</strong> Science Building, Room 301</p>
+    </div>
+
+    <!-- Action buttons (from Task 2) -->
+    <div class="card-actions">
+      <button (click)="onEnrollClick()" class="btn-enroll">Enroll Now</button>
+
+      <button (click)="toggleDetails()" class="btn-details">
+        {{ isExpanded ? 'Hide Details' : 'Show Details' }}
+      </button>
+    </div>
   </div>
 </div>
 

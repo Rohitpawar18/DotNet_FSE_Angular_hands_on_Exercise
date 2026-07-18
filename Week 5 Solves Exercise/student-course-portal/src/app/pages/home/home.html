@@ -1,12 +1,12 @@
 <div class="home-container">
-  <h1>Welcome to Student Course Portal</h1>
+  <h1>{{ portalName }}</h1>
 
   <p class="description">
     Manage your academic journey with ease. Browse courses, check your grades, and track your
     enrollment status all in one place.
   </p>
 
-  <div class="states-row">
+  <div class="stats-row">
     <div class="stat-card">
       <h3>12</h3>
       <p>Courses Available</p>
@@ -18,6 +18,81 @@
     <div class="stat-card">
       <h3>3.8</h3>
       <p>GPA</p>
+    </div>
+  </div>
+
+  <div class="binding-demo">
+    <h2>Angular Binding Types Demo</h2>
+    <div class="demo-section">
+      <h3>1. Property Binding - [property]</h3>
+      <p>Button is {{ isPortalActive ? 'ENABLED' : 'DISABLED' }}</p>
+      <button [disabled]="!isPortalActive" class="btn-enroll">Enroll Now</button>
+      <p class="info">💡 Button disabled state is controlled by component property</p>
+    </div>
+
+    <div class="demo-section">
+      <h3>2. Event Binding - (click)</h3>
+      <button (click)="onEnrollClick()" class="btn-event">Click Me!</button>
+
+      <p *ngIf="message" class="message-display">{{ message }}</p>
+      <p class="info">💡 Click button → method executes → message displays</p>
+    </div>
+
+    <div class="demo-section">
+      <h3>3. Two-Way Binding - [(ngModel)]</h3>
+      <label for="search">Search Courses : </label>
+      <input
+        type="text"
+        id="search"
+        [(ngModel)]="searchTerm"
+        placeholder="Type a course name"
+        class="search-input"
+      />
+
+      <p class="search-result">
+        Searching for: <strong>{{ searchTerm || '(type something)' }}</strong>
+      </p>
+      <p class="info">💡 Type in input → searchTerm updates → display updates (LIVE!)</p>
+    </div>
+
+    <div class="demo-section summary">
+      <h3>4. Binding Comparison</h3>
+      <table class="binding-table">
+        <thead>
+          <tr>
+            <th>Binding Type</th>
+            <th>Syntax</th>
+            <th>Direction</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Interpolation</td>
+            <td>{{ '{{}}' }}</td>
+            <td>Component → DOM</td>
+            <td>{{ portalName }}</td>
+          </tr>
+          <tr>
+            <td>Property Binding</td>
+            <td>[property]</td>
+            <td>Component → DOM</td>
+            <td>[disabled]="!isPortalActive"</td>
+          </tr>
+          <tr>
+            <td>Event Binding</td>
+            <td>(event)</td>
+            <td>DOM → Component</td>
+            <td>(click)="onEnrollClick()"</td>
+          </tr>
+          <tr>
+            <td>Two-Way Binding</td>
+            <td>[(ngModel)]</td>
+            <td>Component ↔ DOM</td>
+            <td>[(ngModel)]="searchTerm"</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

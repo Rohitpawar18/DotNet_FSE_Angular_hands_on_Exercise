@@ -10,36 +10,65 @@ h2 {
   margin-bottom: 0.5rem;
 }
 
-.course-list-container > p {
+.subtitle {
   color: #666;
   margin-bottom: 2rem;
+  font-size: 1rem;
 }
+
+/* ============ COURSES GRID ============ */
 
 .courses-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 2rem;
+  margin-bottom: 2rem;
 }
 
-.course-card {
-  background: white;
-  border: 2px solid #e0e0e0;
+/* ============ SELECTION INFO ============ */
+
+.selection-info {
+  background: #d4edda;
+  border: 2px solid #28a745;
   border-radius: 8px;
   padding: 1.5rem;
-  transition: all 0.3s;
+  margin-top: 2rem;
+  animation: slideIn 0.3s ease-out;
 }
 
-.course-card:hover {
-  border-color: #3498db;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+.info-message {
+  margin: 0;
+  color: #155724;
+  font-size: 1.1rem;
+  font-weight: bold;
 }
 
-.course-card h3 {
-  color: #2c3e50;
-  margin-top: 0;
+.course-name {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  color: #1e7e34;
 }
 
-.course-card p {
-  color: #555;
-  margin: 0.5rem 0;
+.no-selection {
+  background: #e2e3e5;
+  border: 1px dashed #6c757d;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  color: #6c757d;
+  margin-top: 2rem;
+}
+
+/* ============ ANIMATIONS ============ */
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

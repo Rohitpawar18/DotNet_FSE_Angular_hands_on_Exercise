@@ -1,24 +1,26 @@
 <div class="course-list-container">
   <h2>Available Courses</h2>
-  <p>Browse and enroll in courses offered this semester.</p>
+  <p class="subtitle">Browse and enroll in courses offered this semester.</p>
 
+  <!-- ============ COURSES GRID WITH DATA BINDING ============ -->
   <div class="courses-grid">
-    <div class="course-grid">
-      <h3>Data Structure</h3>
-      <p><strong>Code:</strong> CS101</p>
-      <p><strong>Credits:</strong> 4</p>
-    </div>
+    <app-course-card
+      *ngFor="let c of courses"
+      [course]="c"
+      (enrollRequested)="onEnroll($event)"
+    ></app-course-card>
+  </div>
 
-    <div class="course-card">
-      <h3>Web Development</h3>
-      <p><strong>Code:</strong> CS201</p>
-      <p><strong>Credits:</strong> 3</p>
-    </div>
+  <div class="selection-info" *ngIf="selectedCourseId">
+    <p class="info-message">
+      ✅ <strong>Selected Course ID:</strong> {{ selectedCourseId }}
+      <span class="course-name">
+        ({{ (courses | slice: selectedCourseId - 1 : selectedCourseId)[0]?.name }})
+      </span>
+    </p>
+  </div>
 
-    <div class="course-card">
-      <h3>Database Management</h3>
-      <p><strong>Code:</strong> CS301</p>
-      <p><strong>Credits:</strong> 4</p>
-    </div>
+  <div class="no-selection" *ngIf="!selectedCourseId">
+    <p>👆 Click "Enroll Now" on any course to select it</p>
   </div>
 </div>

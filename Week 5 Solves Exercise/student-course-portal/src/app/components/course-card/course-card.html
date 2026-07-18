@@ -1,0 +1,25 @@
+<div class="course-card" *ngIf="course">
+  <div class="card-header">
+    <h3>{{ course.name }}</h3>
+  </div>
+  <div class="card-body">
+    <p>
+      <strong>Course Code:</strong> <span class="code">{{ course.code }}</span>
+    </p>
+    <p>
+      <strong>Credits:</strong> <span class="credits">{{ course.credits }}</span>
+    </p>
+    <p *ngIf="course.gradeStatus" class="grade-status">
+      <strong>Status:</strong>
+      <span class="badge" [ngClass]="course.gradeStatus">
+        {{ course.gradeStatus | uppercase }}
+      </span>
+    </p>
+
+    <button (click)="onEnrollClick()" class="btn-enroll">Enroll Now</button>
+  </div>
+</div>
+
+<div class="card-empty" *ngIf="!course">
+  <p>No course data provided</p>
+</div>

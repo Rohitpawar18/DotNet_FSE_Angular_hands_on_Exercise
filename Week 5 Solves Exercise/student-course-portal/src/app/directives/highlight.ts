@@ -1,3 +1,4 @@
+// highlight.ts
 import { Directive, HostListener, Input, ElementRef } from '@angular/core';
 
 @Directive({

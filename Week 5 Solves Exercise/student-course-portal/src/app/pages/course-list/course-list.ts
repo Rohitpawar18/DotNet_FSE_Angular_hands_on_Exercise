@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CourseCard } from '../../components/course-card/course-card';
 
@@ -59,7 +59,11 @@ export class CourseList implements OnInit, OnDestroy {
 
   selectedCourseId: number | null = null;
 
-  constructor() {
+  /**
+   * ✅ Using ChangeDetectorRef instead of NgZone
+   * This is the most direct way to trigger change detection
+   */
+  constructor(private cdr: ChangeDetectorRef) {
     console.log('CourseListComponent constructor called');
   }
 
@@ -67,9 +71,16 @@ export class CourseList implements OnInit, OnDestroy {
     console.log('CourseListComponent initialised');
     console.log(`Loaded ${this.courses.length} courses`);
 
+    /**
+     * ✅ Simple setTimeout with manual change detection
+     */
     setTimeout(() => {
       console.log('Loading complete - showing course list');
       this.isLoading = false;
+
+      // ✅ Manually trigger change detection
+      this.cdr.detectChanges();
+      console.log('Change detection triggered - isLoading:', this.isLoading);
     }, 1500);
   }
 
@@ -81,7 +92,6 @@ export class CourseList implements OnInit, OnDestroy {
     console.log(`Enrolling in course: ${courseId}`);
     this.selectedCourseId = courseId;
 
-    // Find and display course name
     const enrolledCourse = this.courses.find((c) => c.id === courseId);
     if (enrolledCourse) {
       console.log(`Successfully enrolled in: ${enrolledCourse.name}`);

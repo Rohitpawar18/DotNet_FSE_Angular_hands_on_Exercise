@@ -1,0 +1,287 @@
+<div class="reactive-container">
+  <div class="form-wrapper">
+    <h1>Reactive Enrollment Form</h1>
+    <p class="form-subtitle">Advanced form with custom validators and dynamic controls</p>
+
+    <!-- ============ SUCCESS MESSAGE ============ -->
+    <div class="success-message" *ngIf="submitted">
+      <div class="success-icon">✅</div>
+      <h3>Enrollment Submitted Successfully!</h3>
+      <p>Your reactive form enrollment has been processed.</p>
+    </div>
+
+    <form [formGroup]="enrollForm" (ngSubmit)="onSubmit()" class="enrollment-form">
+      <!-- ============ STUDENT NAME FIELD ============ -->
+      <div class="form-group">
+        <label for="studentName">
+          <span class="label-text">Student Name</span>
+          <span class="required">*</span>
+        </label>
+        <input
+          type="text"
+          id="studentName"
+          formControlName="studentName"
+          placeholder="Enter your full name"
+          class="form-control"
+        />
+
+        <div
+          class="error-messages"
+          *ngIf="enrollForm.get('studentName')?.touched && enrollForm.get('studentName')?.errors"
+        >
+          <span class="error-text" *ngIf="enrollForm.get('studentName')?.errors?.['required']">
+            ❌ Name is required
+          </span>
+          <span class="error-text" *ngIf="enrollForm.get('studentName')?.errors?.['minlength']">
+            ❌ Name must be at least 3 characters (current:
+            {{ enrollForm.get('studentName')?.value?.length || 0 }})
+          </span>
+        </div>
+
+        <!-- SUCCESS INDICATOR -->
+        <span
+          class="success-indicator"
+          *ngIf="enrollForm.get('studentName')?.valid && enrollForm.get('studentName')?.touched"
+        >
+          ✅
+        </span>
+      </div>
+
+      <!-- ============ EMAIL FIELD WITH ASYNC VALIDATOR ============ -->
+      <div class="form-group">
+        <label for="studentEmail">
+          <span class="label-text">Student Email</span>
+          <span class="required">*</span>
+        </label>
+        <input
+          type="email"
+          id="studentEmail"
+          formControlName="studentEmail"
+          placeholder="Enter your email address"
+          class="form-control"
+        />
+
+        <div class="async-loading" *ngIf="enrollForm.get('studentEmail')?.pending">
+          <span class="spinner-small"></span>
+          Checking email availability...
+        </div>
+
+        <!-- ERROR MESSAGES -->
+        <div
+          class="error-messages"
+          *ngIf="enrollForm.get('studentEmail')?.touched && enrollForm.get('studentEmail')?.errors"
+        >
+          <span class="error-text" *ngIf="enrollForm.get('studentEmail')?.errors?.['required']">
+            ❌ Email is required
+          </span>
+          <span class="error-text" *ngIf="enrollForm.get('studentEmail')?.errors?.['email']">
+            ❌ Please enter a valid email address
+          </span>
+          <span class="error-text" *ngIf="enrollForm.get('studentEmail')?.errors?.['emailTaken']">
+            ❌ This email is already registered (test@ emails used for demo)
+          </span>
+        </div>
+
+        <span
+          class="success-indicator"
+          *ngIf="
+            enrollForm.get('studentEmail')?.valid &&
+            enrollForm.get('studentEmail')?.touched &&
+            !enrollForm.get('studentEmail')?.pending
+          "
+        >
+          ✅
+        </span>
+      </div>
+
+      <!-- ============ COURSE ID FIELD WITH CUSTOM VALIDATOR ============ -->
+      <div class="form-group">
+        <label for="courseId">
+          <span class="label-text">Course ID</span>
+          <span class="required">*</span>
+        </label>
+        <input
+          type="text"
+          id="courseId"
+          formControlName="courseId"
+          placeholder="Enter course ID (e.g., CS101, not XX101)"
+          class="form-control"
+        />
+
+        <!-- ERROR MESSAGES -->
+        <div
+          class="error-messages"
+          *ngIf="enrollForm.get('courseId')?.touched && enrollForm.get('courseId')?.errors"
+        >
+          <span class="error-text" *ngIf="enrollForm.get('courseId')?.errors?.['required']">
+            ❌ Course ID is required
+          </span>
+          <!-- CUSTOM VALIDATOR ERROR -->
+          <span class="error-text" *ngIf="enrollForm.get('courseId')?.errors?.['noCourseCode']">
+            ❌ Course code starting with 'XX' is not allowed
+          </span>
+        </div>
+
+        <span
+          class="success-indicator"
+          *ngIf="enrollForm.get('courseId')?.valid && enrollForm.get('courseId')?.touched"
+        >
+          ✅
+        </span>
+      </div>
+
+      <!-- ============ SEMESTER DROPDOWN ============ -->
+      <div class="form-group">
+        <label for="semester">
+          <span class="label-text">Preferred Semester</span>
+          <span class="required">*</span>
+        </label>
+        <select id="semester" formControlName="preferredSemester" class="form-control">
+          <option value="Odd">Odd Semester</option>
+          <option value="Even">Even Semester</option>
+        </select>
+
+        <span
+          class="success-indicator"
+          *ngIf="
+            enrollForm.get('preferredSemester')?.valid &&
+            enrollForm.get('preferredSemester')?.touched
+          "
+        >
+          ✅
+        </span>
+      </div>
+
+      <!-- ============ AGREE TO TERMS CHECKBOX ============ -->
+      <div class="form-group form-group-checkbox">
+        <label for="agreeTerms" class="checkbox-label">
+          <input
+            type="checkbox"
+            id="agreeTerms"
+            formControlName="agreeToTerms"
+            class="checkbox-input"
+          />
+          <span class="checkbox-text">
+            I agree to the terms and conditions
+            <span class="required">*</span>
+          </span>
+        </label>
+
+        <!-- ERROR MESSAGE -->
+        <div
+          class="error-messages"
+          *ngIf="enrollForm.get('agreeToTerms')?.touched && enrollForm.get('agreeToTerms')?.errors"
+        >
+          <span class="error-text" *ngIf="enrollForm.get('agreeToTerms')?.errors?.['required']">
+            ❌ You must agree to the terms to proceed
+          </span>
+        </div>
+
+        <span
+          class="success-indicator"
+          *ngIf="enrollForm.get('agreeToTerms')?.valid && enrollForm.get('agreeToTerms')?.touched"
+        >
+          ✅
+        </span>
+      </div>
+
+      <div class="form-array-section">
+        <h3>Additional Course Enrollments</h3>
+        <p class="form-array-subtitle">Enroll in multiple courses (optional)</p>
+
+        <!-- Dynamic form array container -->
+        <div [formArray]="additionalCourses" class="form-array-container">
+          <!-- Loop through each course control -->
+          <div
+            *ngFor="let ctrl of additionalCourses.controls; let i = index"
+            class="form-array-item"
+          >
+            <div class="form-group">
+              <label for="course-{{ i }}">
+                <span class="label-text">Additional Course {{ i + 1 }}</span>
+              </label>
+              <div class="course-input-group">
+                <input
+                  type="text"
+                  [id]="'course-' + i"
+                  [formControl]="$any(ctrl)"
+                  placeholder="Enter course ID (e.g., CS201)"
+                  class="form-control"
+                />
+
+                <!-- Remove button for this course -->
+                <button
+                  type="button"
+                  (click)="removeCourse(i)"
+                  class="btn-remove"
+                  title="Remove this course"
+                >
+                  ❌ Remove
+                </button>
+              </div>
+
+              <!-- ERROR MESSAGES FOR ADDITIONAL COURSE -->
+              <div class="error-messages" *ngIf="ctrl.touched && ctrl.errors">
+                <span class="error-text" *ngIf="ctrl.errors?.['required']">
+                  ❌ Course ID is required
+                </span>
+                <span class="error-text" *ngIf="ctrl.errors?.['noCourseCode']">
+                  ❌ Course code starting with 'XX' is not allowed
+                </span>
+              </div>
+
+              <span class="success-indicator" *ngIf="ctrl.valid && ctrl.touched"> ✅ </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Course Button -->
+        <button type="button" (click)="addCourse()" class="btn-add-course">
+          + Add Another Course
+        </button>
+
+        <!-- Display number of additional courses -->
+        <p class="course-count" *ngIf="additionalCourses.length > 0">
+          📚 Total additional courses: {{ additionalCourses.length }}
+        </p>
+      </div>
+
+      <!-- ============ FORM STATE DEBUG INFO ============ -->
+      <div class="form-state-info">
+        <p>
+          <strong>Form Valid:</strong>
+          <span [ngClass]="{ 'valid-yes': enrollForm.valid, 'valid-no': !enrollForm.valid }">
+            {{ enrollForm.valid ? '✅ YES' : '❌ NO' }}
+          </span>
+        </p>
+        <p>
+          <strong>Form Pending (Async Validators Running):</strong>
+          {{ enrollForm.pending ? '⏳ YES' : '❌ NO' }}
+        </p>
+        <p>
+          <strong>Form Touched:</strong>
+          {{ enrollForm.touched ? '✅ YES' : '❌ NO' }}
+        </p>
+        <p>
+          <strong>Form Dirty:</strong>
+          {{ enrollForm.dirty ? '✅ YES' : '❌ NO' }}
+        </p>
+      </div>
+
+      <!-- ============ ACTION BUTTONS ============ -->
+      <div class="form-actions">
+        <!-- Submit button - disabled when form invalid -->
+        <button
+          type="submit"
+          [disabled]="enrollForm.invalid || enrollForm.pending"
+          class="btn btn-submit"
+        >
+          {{ enrollForm.pending ? '⏳ Validating...' : 'Submit Form' }}
+        </button>
+
+        <!-- Reset button -->
+        <button type="button" (click)="onReset()" class="btn btn-reset">Clear Form</button>
+      </div>
+    </form>
+  </div>
+</div>

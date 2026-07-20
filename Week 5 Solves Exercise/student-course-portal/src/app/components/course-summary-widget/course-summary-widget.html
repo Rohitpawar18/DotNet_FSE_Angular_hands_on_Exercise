@@ -1,0 +1,35 @@
+<div class="widget-container">
+  <div class="widget-header">
+    <h3>📊 Course Summary</h3>
+    <p>Stats from CourseService (singleton instance)</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-value">{{ totalCourses }}</div>
+      <div class="stat-label">Total Courses</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value passed">{{ passedCourses }}</div>
+      <div class="stat-label">Passed</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value failed">{{ failedCourses }}</div>
+      <div class="stat-label">Failed</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value pending">{{ pendingCourses }}</div>
+      <div class="stat-label">Pending</div>
+    </div>
+  </div>
+
+  <button (click)="addDemoCourse()" class="btn-add-demo">
+    ➕ Add Demo Course (Test Singleton)
+  </button>
+
+  <p class="widget-note">
+    💡 <strong>Singleton Test:</strong> Click "Add Demo Course" and watch: <br />✓ This widget's
+    total increases <br />✓ Home component's "Courses Available" increases <br />✓ CourseList's
+    cards update <br />All use the same CourseService instance!
+  </p>
+</div>

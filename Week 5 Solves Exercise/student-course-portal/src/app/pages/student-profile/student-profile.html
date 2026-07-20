@@ -2,11 +2,49 @@
   <h2>Student Profile</h2>
 
   <div class="profile-card">
-    <h3>John Doe</h3>
-    <p><strong>Email:</strong> john.doe@university.edu</p>
-    <p><strong>Student ID:</strong> STU-2024-001</p>
-    <p><strong>Major:</strong> Computer Science</p>
-    <p><strong>Current GPA:</strong> 3.8</p>
-    <p><strong>Semester:</strong> Fall 2024</p>
+    <h3>{{ studentName }}</h3>
+    <p><strong>Email:</strong> {{ studentEmail }}</p>
+    <p><strong>Student ID:</strong> {{ studentId }}</p>
+    <p><strong>Major:</strong> {{ major }}</p>
+    <p><strong>Current GPA:</strong> {{ gpa }}</p>
+    <p><strong>Semester:</strong> {{ semester }}</p>
+  </div>
+
+  <!-- ============ ENROLLED COURSES FROM SERVICE ============ -->
+  <div class="enrolled-section">
+    <div class="section-header">
+      <h3>📚 Enrolled Courses</h3>
+      <button (click)="refreshEnrolledCourses()" class="btn-refresh">🔄 Refresh</button>
+    </div>
+
+    <p class="enrollment-status">{{ getEnrollmentStatus() }}</p>
+
+    <!-- Display enrolled courses -->
+    <div class="enrolled-courses" *ngIf="enrolledCourses.length > 0">
+      <div class="course-item" *ngFor="let course of enrolledCourses">
+        <div class="course-info">
+          <h4>{{ course.name }}</h4>
+          <p><strong>Code:</strong> {{ course.code }}</p>
+          <p><strong>Credits:</strong> {{ course.credits }}</p>
+          <p>
+            <strong>Status:</strong>
+            <span class="badge" [ngClass]="course.gradeStatus">
+              {{ course.gradeStatus | uppercase }}
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty state with instructions -->
+    <div class="no-enrollments" *ngIf="enrolledCourses.length === 0">
+      <p>📝 No courses enrolled yet</p>
+      <p class="instruction">
+        👉 Go to "Available Courses" section<br />
+        👉 Click "Enroll Now" on any course<br />
+        👉 Come back here and click "Refresh" button<br />
+        👉 Your enrolled courses will appear here!
+      </p>
+    </div>
   </div>
 </div>

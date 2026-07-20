@@ -19,15 +19,6 @@
   transform: translateY(-4px);
 }
 
-/* ============ NGCLASS CONDITIONAL STYLING ============ */
-
-/**
- * CARD--ENROLLED CLASS
- * Applied when course has been enrolled via [ngClass]="{ 'card--enrolled': isEnrolled() }"
- * 
- * In this demo, we'll manually add the class to show the effect
- * In real app, this would toggle based on enrollment service
- */
 .course-card.card--enrolled {
   background: linear-gradient(135deg, #d4edda 0%, #ffffff 100%);
   border-left-color: #28a745;
@@ -46,11 +37,6 @@
   font-weight: bold;
 }
 
-/**
- * CARD--FULL CLASS
- * Applied when credits >= 4 via [ngClass]="{ 'card--full': course?.credits >= 4 }"
- * Shows visual indicator for high-credit courses
- */
 .course-card.card--full .card-header {
   background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
   position: relative;
@@ -68,11 +54,6 @@
   color: white;
 }
 
-/**
- * EXPANDED CLASS
- * Applied when isExpanded = true
- * Increases card height and changes appearance
- */
 .course-card.expanded {
   height: auto;
   background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
@@ -260,4 +241,14 @@ button {
   text-align: center;
   color: #999;
   border-radius: 8px;
+}
+
+/* ============ ENROLLED BUTTON STATE ============ */
+
+.btn-enroll.btn-enrolled {
+  background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+}
+
+.btn-enroll.btn-enrolled:hover {
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
 }

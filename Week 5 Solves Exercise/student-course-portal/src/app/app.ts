@@ -7,6 +7,8 @@ import { CourseList } from './pages/course-list/course-list';
 import { StudentProfile } from './pages/student-profile/student-profile';
 import { EnrollmentForm } from './pages/enrollment-form/enrollment-form';
 import { ReactiveEnrollmentFormComponent } from './pages/reactive-enrollment-form/reactive-enrollment-form';
+import { CourseSummaryWidget } from './components/course-summary-widget/course-summary-widget';
+import { NotificationComponent } from './components/notification/notification';
 
 @Component({
   selector: 'app-root',
@@ -20,11 +22,12 @@ import { ReactiveEnrollmentFormComponent } from './pages/reactive-enrollment-for
     StudentProfile,
     EnrollmentForm,
     ReactiveEnrollmentFormComponent,
+    CourseSummaryWidget,
+    NotificationComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App {
-  // protected readonly title = signal('student-course-portal');
   title = 'Student Course Portal';
 }

@@ -41,7 +41,10 @@
 
     <!-- Action buttons (from Task 2) -->
     <div class="card-actions">
-      <button (click)="onEnrollClick()" class="btn-enroll">Enroll Now</button>
+      <!-- ✅ Dynamic Enroll/Unenroll button -->
+      <button (click)="onEnrollClick()" class="btn-enroll" [class.btn-enrolled]="isEnrolled()">
+        {{ isEnrolled() ? '✅ Unenroll' : 'Enroll Now' }}
+      </button>
 
       <button (click)="toggleDetails()" class="btn-details">
         {{ isExpanded ? 'Hide Details' : 'Show Details' }}

@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from
 import { CommonModule } from '@angular/common';
 import { Highlight } from '../../directives/highlight';
 import { CreditLabelPipe } from '../../pipes/credit-label-pipe';
+import { Enrollment } from '../../services/enrollment';
 
 @Component({
   selector: 'app-course-card',
@@ -21,30 +22,38 @@ export class CourseCard implements OnChanges {
   @Output() enrollRequested = new EventEmitter<number>();
 
   isExpanded = false;
-  constructor() {
-    console.log('CourseCardComponent constructor called');
+  constructor(private enrollment: Enrollment) {
+    console.log('CourseCardComponent constructor - EnrollmentService injected');
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('CourseCardComponent ngOnChanges fired');
-
     if (changes['course']) {
       const courseChange = changes['course'];
-      console.log('  Course Input Changed:');
-      console.log('    Previous:', courseChange.previousValue);
-      console.log('    Current:', courseChange.currentValue);
-      console.log('    First Change?:', courseChange.firstChange);
+      console.log('  Course Input Changed:', courseChange.currentValue);
     }
   }
 
   onEnrollClick(): void {
     if (this.course) {
-      console.log(`Emitting enrollRequested event for course ID: ${this.course.id}`);
-      // Emit the course ID to parent via @Output
+      if (this.isEnrolled()) {
+        // Already enrolled - unenroll
+        console.log(`Unenrolling from course ${this.course.id}`);
+        this.enrollment.unenroll(this.course.id);
+      } else {
+        // Not enrolled - enroll
+        console.log(`Enrolling in course ${this.course.id}`);
+        this.enrollment.enroll(this.course.id);
+      }
+
       this.enrollRequested.emit(this.course.id);
     }
   }
 
+  isEnrolled(): boolean {
+    if (!this.course) return false;
+    return this.enrollment.isEnrolled(this.course.id);
+  }
   toggleDetails(): void {
     this.isExpanded = !this.isExpanded;
     console.log(`Card ${this.course.id} extended: ${this.isExpanded}`);
@@ -56,11 +65,6 @@ export class CourseCard implements OnChanges {
       'card--full': this.course?.credits >= 4,
       expanded: this.isExpanded,
     };
-  }
-
-  isEnrolled(): boolean {
-    // Placeholder: in real app, check against enrollment service
-    return false;
   }
 
   get statusColor(): string {

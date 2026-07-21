@@ -7,6 +7,14 @@ import { Course } from '../../models/course.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+
+import {
+  selectAllCourses,
+  selectCoursesError,
+  selectCoursesLoading,
+} from '../../store/course/course.selectors';
+import { loadCourse, loadCourses } from '../../store/course/course.actions';
 
 @Component({
   selector: 'app-course-list',
@@ -16,11 +24,13 @@ import { takeUntil } from 'rxjs/operators';
   styleUrl: './course-list.css',
 })
 export class CourseList implements OnInit, OnDestroy {
-  isLoading = true;
+  courses$ = this.store.select(selectAllCourses);
+  // isLoading = true;
+  isLoading$ = this.store.select(selectCoursesLoading);
   courses: Course[] = [];
   searchTerm = '';
   errorMessage = '';
-
+  error$ = this.store.select(selectCoursesError);
   selectedCourseId: number | null = null;
   private destroy$ = new Subject<void>();
   private loadingTimeoutId?: ReturnType<typeof setTimeout>;
@@ -30,8 +40,9 @@ export class CourseList implements OnInit, OnDestroy {
     private courseService: CourseService,
     private cdr: ChangeDetectorRef,
     private ngZone: NgZone,
-    private router: Router, // ✅ ADD THIS
-    private route: ActivatedRoute, // ✅ ADD THIS
+    private router: Router,
+    private route: ActivatedRoute,
+    private store: Store,
   ) {
     console.log('CourseListComponent constructor - CourseService injected');
   }
@@ -39,43 +50,23 @@ export class CourseList implements OnInit, OnDestroy {
   ngOnInit(): void {
     console.log('CourseListComponent initialised');
 
-    // Load courses from service
-    this.courseService
-      .getCourses()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (courses) => {
-          this.courses = courses;
-          console.log('Courses loaded:', courses.length);
-        },
-        error: (error) => {
-          this.errorMessage = error.message;
-          console.error('Error loading courses:', error);
-          this.isLoading = false;
-        },
-        complete: () => {
-          console.log('Course loading complete');
-          this.isLoading = false;
-        },
-      });
+    // ✅ DISPATCH LOAD ACTION
+    /**
+     * Trigger the course loading effect
+     * This dispatches loadCourses action → Effect → HTTP call → Reducer updates state
+     */
+    this.store.dispatch(loadCourses());
+    console.log('🔄 Dispatched loadCourses action');
 
+    // ✅ READ QUERY PARAMETER (keep this)
     const searchQuery = this.route.snapshot.queryParamMap.get('search');
     if (searchQuery) {
       console.log('Search query:', searchQuery);
       this.searchTerm = searchQuery;
-      // In real app: filter courses by searchQuery
     }
 
-    // Simulate loading (existing code)
-    this.ngZone.runOutsideAngular(() => {
-      this.loadingTimeoutId = setTimeout(() => {
-        this.ngZone.run(() => {
-          console.log('Loading complete');
-          this.isLoading = false;
-          this.cdr.detectChanges();
-        });
-      }, 1500);
-    });
+    // ✅ REMOVE OLD LOADING LOGIC
+    // (The store now manages loading state via selector)
   }
 
   onEnroll(courseId: number): void {

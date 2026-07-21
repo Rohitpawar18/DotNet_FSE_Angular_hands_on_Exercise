@@ -1,5 +1,11 @@
 <app-header></app-header>
 <router-outlet></router-outlet>
+<div class="global-loading-overlay" *ngIf="loading$ | async">
+  <div class="global-loading-card">
+    <div class="global-loading-spinner"></div>
+    <p>Loading data...</p>
+  </div>
+</div>
 <!-- <app-home></app-home>
 <app-course-summary-widget></app-course-summary-widget>
 <app-course-list></app-course-list>

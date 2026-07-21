@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Enrollment } from '../../services/enrollment';
 import { Course } from '../../models/course.model';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-student-profile',
@@ -20,6 +22,7 @@ export class StudentProfile implements OnInit, OnDestroy {
 
   enrolledCourses: Course[] = [];
   private unsubscribeFromEnrollment?: () => void;
+  private destroy$ = new Subject<void>();
 
   constructor(private enrollmentService: Enrollment) {
     console.log('StudentProfileComponent constructor - EnrollmentService injected');
@@ -33,19 +36,37 @@ export class StudentProfile implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    this.unsubscribeFromEnrollment?.();
-  }
-
   loadEnrolledCourses(): void {
-    this.enrolledCourses = this.enrollmentService.getEnrolledCourses();
-    console.log(`Loaded ${this.enrolledCourses.length} enrolled courses`);
+    this.enrollmentService
+      .getEnrolledCourses()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (courses) => {
+          this.enrolledCourses = courses;
+          console.log(`Loaded ${this.enrolledCourses.length} enrolled courses`);
+        },
+        error: (error) => {
+          console.error('Error loading enrolled courses:', error);
+          this.enrolledCourses = [];
+        },
+      });
   }
 
   refreshEnrolledCourses(): void {
     console.log('Refreshing enrolled courses...');
-    this.enrolledCourses = this.enrollmentService.getEnrolledCourses();
-    console.log(`Refreshed: ${this.enrolledCourses.length} enrolled courses`);
+    this.enrollmentService
+      .getEnrolledCourses()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (courses) => {
+          this.enrolledCourses = courses;
+          console.log(`Refreshed: ${this.enrolledCourses.length} enrolled courses`);
+        },
+        error: (error) => {
+          console.error('Error refreshing enrolled courses:', error);
+          this.enrolledCourses = [];
+        },
+      });
   }
 
   getEnrollmentStatus(): string {
@@ -57,5 +78,11 @@ export class StudentProfile implements OnInit, OnDestroy {
     } else {
       return `Enrolled in ${count} courses`;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeFromEnrollment?.();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

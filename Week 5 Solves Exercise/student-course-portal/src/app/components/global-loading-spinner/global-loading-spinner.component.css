@@ -1,8 +1,4 @@
-:host {
-  display: block;
-}
-
-.global-loading-overlay {
+.spinner-overlay {
   position: fixed;
   inset: 0;
   display: flex;
@@ -13,7 +9,7 @@
   z-index: 2000;
 }
 
-.global-loading-card {
+.spinner-card {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,22 +22,22 @@
   min-width: 180px;
 }
 
-.global-loading-spinner {
+.spinner {
   width: 54px;
   height: 54px;
   border-radius: 50%;
   border: 5px solid #dbeafe;
   border-top-color: #2563eb;
-  animation: global-loading-spin 0.9s linear infinite;
+  animation: spin 0.9s linear infinite;
 }
 
-.global-loading-card p {
+.spinner-card p {
   margin: 0;
   font-weight: 600;
   letter-spacing: 0.02em;
 }
 
-@keyframes global-loading-spin {
+@keyframes spin {
   from {
     transform: rotate(0deg);
   }

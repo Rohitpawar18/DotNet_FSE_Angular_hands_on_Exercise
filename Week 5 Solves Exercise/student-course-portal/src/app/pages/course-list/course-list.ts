@@ -1,10 +1,12 @@
-import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CourseCard } from '../../components/course-card/course-card';
 import { CourseService } from '../../services/course';
 import { Course } from '../../models/course.model';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-course-list',
@@ -13,12 +15,15 @@ import { Router, ActivatedRoute } from '@angular/router';
   templateUrl: './course-list.html',
   styleUrl: './course-list.css',
 })
-export class CourseList implements OnInit {
+export class CourseList implements OnInit, OnDestroy {
   isLoading = true;
   courses: Course[] = [];
   searchTerm = '';
+  errorMessage = '';
 
   selectedCourseId: number | null = null;
+  private destroy$ = new Subject<void>();
+  private loadingTimeoutId?: ReturnType<typeof setTimeout>;
 
   // ✅ CHANGE THIS SECTION
   constructor(
@@ -35,8 +40,24 @@ export class CourseList implements OnInit {
     console.log('CourseListComponent initialised');
 
     // Load courses from service
-    this.courses = this.courseService.getCourses();
-    console.log(`Loaded ${this.courses.length} courses from CourseService`);
+    this.courseService
+      .getCourses()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (courses) => {
+          this.courses = courses;
+          console.log('Courses loaded:', courses.length);
+        },
+        error: (error) => {
+          this.errorMessage = error.message;
+          console.error('Error loading courses:', error);
+          this.isLoading = false;
+        },
+        complete: () => {
+          console.log('Course loading complete');
+          this.isLoading = false;
+        },
+      });
 
     const searchQuery = this.route.snapshot.queryParamMap.get('search');
     if (searchQuery) {
@@ -47,7 +68,7 @@ export class CourseList implements OnInit {
 
     // Simulate loading (existing code)
     this.ngZone.runOutsideAngular(() => {
-      setTimeout(() => {
+      this.loadingTimeoutId = setTimeout(() => {
         this.ngZone.run(() => {
           console.log('Loading complete');
           this.isLoading = false;
@@ -72,7 +93,8 @@ export class CourseList implements OnInit {
   }
 
   navigateToCourseDetail(courseId: number): void {
-    console.log('Navigating to course detail:', courseId);
+    const course = this.courses.find((currentCourse) => currentCourse.id === courseId);
+    console.log('Navigating to course detail:', course?.name ?? courseId);
     this.router.navigate(['/courses', courseId]);
   }
 
@@ -84,6 +106,15 @@ export class CourseList implements OnInit {
       });
     } else {
       this.router.navigate(['/courses']);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+
+    if (this.loadingTimeoutId) {
+      clearTimeout(this.loadingTimeoutId);
     }
   }
 }

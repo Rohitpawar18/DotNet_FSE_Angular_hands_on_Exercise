@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { Header } from './components/header/header';
-import { CourseDetail } from './pages/course-detail/course-detail';
+import { LoadingService } from './services/loading.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -13,4 +14,9 @@ import { CourseDetail } from './pages/course-detail/course-detail';
 })
 export class App {
   title = 'Student Course Portal';
+  loading$: Observable<boolean>;
+
+  constructor(private loadingService: LoadingService) {
+    this.loading$ = this.loadingService.getLoading$();
+  }
 }

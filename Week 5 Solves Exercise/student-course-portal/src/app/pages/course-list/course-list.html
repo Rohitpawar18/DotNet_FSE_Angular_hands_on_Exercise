@@ -19,6 +19,12 @@
     <p class="search-hint">💡 Type to filter courses and update URL with query parameter</p>
   </div>
 
+  <div class="error-message" *ngIf="errorMessage">
+    <p class="error-icon">❌</p>
+    <p class="error-text">{{ errorMessage }}</p>
+    <button (click)="errorMessage = ''">Dismiss</button>
+  </div>
+
   <!-- ✅ LOADING STATE -->
   <div class="loading-container" *ngIf="isLoading">
     <div class="spinner"></div>

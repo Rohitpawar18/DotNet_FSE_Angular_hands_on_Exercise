@@ -1,8 +1,18 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Highlight } from '../../directives/highlight';
 import { CreditLabelPipe } from '../../pipes/credit-label-pipe';
 import { Enrollment } from '../../services/enrollment';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-course-card',
@@ -11,7 +21,7 @@ import { Enrollment } from '../../services/enrollment';
   templateUrl: './course-card.html',
   styleUrl: './course-card.css',
 })
-export class CourseCard implements OnChanges {
+export class CourseCard implements OnChanges, OnDestroy {
   @Input() course!: {
     id: number;
     name: string;
@@ -22,6 +32,8 @@ export class CourseCard implements OnChanges {
   @Output() enrollRequested = new EventEmitter<number>();
 
   isExpanded = false;
+  private destroy$ = new Subject<void>();
+
   constructor(private enrollment: Enrollment) {
     console.log('CourseCardComponent constructor - EnrollmentService injected');
   }
@@ -39,14 +51,32 @@ export class CourseCard implements OnChanges {
       if (this.isEnrolled()) {
         // Already enrolled - unenroll
         console.log(`Unenrolling from course ${this.course.id}`);
-        this.enrollment.unenroll(this.course.id);
+        this.enrollment
+          .unenroll(this.course.id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.enrollRequested.emit(this.course.id);
+            },
+            error: (error) => {
+              console.error('❌ Failed to unenroll from course:', error);
+            },
+          });
       } else {
         // Not enrolled - enroll
         console.log(`Enrolling in course ${this.course.id}`);
-        this.enrollment.enroll(this.course.id);
+        this.enrollment
+          .enroll(this.course.id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.enrollRequested.emit(this.course.id);
+            },
+            error: (error) => {
+              console.error('❌ Failed to enroll in course:', error);
+            },
+          });
       }
-
-      this.enrollRequested.emit(this.course.id);
     }
   }
 
@@ -78,5 +108,10 @@ export class CourseCard implements OnChanges {
       default:
         return '#e0e0e0'; // Light grey default
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

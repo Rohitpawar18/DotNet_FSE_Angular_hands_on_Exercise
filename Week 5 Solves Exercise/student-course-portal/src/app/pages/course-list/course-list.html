@@ -1,44 +1,70 @@
 <div class="course-list-container">
-  <h2>Available Courses</h2>
-  <p class="subtitle">Browse and enroll in courses offered this semester.</p>
+  <div class="header-section">
+    <h2>Available Courses</h2>
+    <p class="subtitle">Browse and enroll in courses offered this semester.</p>
+  </div>
 
+  <!-- ✅ SEARCH SECTION -->
+  <div class="search-section">
+    <div class="search-wrapper">
+      <span class="search-icon">🔍</span>
+      <input
+        [(ngModel)]="searchTerm"
+        placeholder="Search courses by name or code..."
+        (change)="updateSearchUrl()"
+        class="search-input"
+      />
+      <span class="search-count" *ngIf="searchTerm">{{ courses.length }} results</span>
+    </div>
+    <p class="search-hint">💡 Type to filter courses and update URL with query parameter</p>
+  </div>
+
+  <!-- ✅ LOADING STATE -->
   <div class="loading-container" *ngIf="isLoading">
     <div class="spinner"></div>
     <p class="loading-text">Loading courses...</p>
   </div>
 
-  <div class="courses-grid" *ngIf="!isLoading">
-    <app-course-card
-      *ngFor="let course of courses; let i = index; trackBy: trackByCourseId"
-      [course]="course"
-      (enrollRequested)="onEnroll($event)"
-    ></app-course-card>
-  </div>
-
-  <div *ngIf="courses.length > 0; else noCourses">
-    <!-- This shows when courses.length > 0 -->
-  </div>
-
-  <ng-template #noCourses>
-    <div class="no-courses-message">
-      <p>❌ No courses available at this time.</p>
-      <p>Please check back later!</p>
+  <!-- ✅ COURSES GRID -->
+  <div *ngIf="!isLoading && courses.length > 0" class="courses-section">
+    <div class="courses-grid">
+      <app-course-card
+        *ngFor="let course of courses; let i = index; trackBy: trackByCourseId"
+        [course]="course"
+        (enrollRequested)="onEnroll($event)"
+        (click)="navigateToCourseDetail(course.id)"
+        class="clickable-card"
+      ></app-course-card>
     </div>
-  </ng-template>
-
-  <!-- ============ SELECTED COURSE DISPLAY ============ -->
-  <!-- Display when a course has been selected -->
-  <div class="selection-info" *ngIf="selectedCourseId">
-    <p class="info-message">
-      ✅ <strong>Selected Course ID:</strong> {{ selectedCourseId }}
-      <span class="course-name">
-        ({{ (courses | slice: selectedCourseId - 1 : selectedCourseId)[0]?.name }})
-      </span>
-    </p>
   </div>
 
-  <!-- Fallback message when no course selected -->
-  <div class="no-selection" *ngIf="!selectedCourseId">
-    <p>👆 Click "Enroll Now" on any course to select it</p>
+  <!-- ✅ NO COURSES MESSAGE -->
+  <div class="no-courses-message" *ngIf="!isLoading && courses.length === 0">
+    <div class="empty-state">
+      <p class="empty-icon">📚</p>
+      <h3>No Courses Available</h3>
+      <p>No courses match your current search criteria.</p>
+      <p class="empty-hint">Try adjusting your search or check back later!</p>
+    </div>
+  </div>
+
+  <!-- ✅ SELECTION INFO -->
+  <div class="selection-info" *ngIf="selectedCourseId">
+    <div class="info-card">
+      <p class="info-message">
+        ✅ <strong>Selected Course ID:</strong> {{ selectedCourseId }}
+        <span class="course-name">
+          ({{ (courses | slice: selectedCourseId - 1 : selectedCourseId)[0]?.name }})
+        </span>
+      </p>
+      <button class="btn-view-detail" (click)="navigateToCourseDetail(selectedCourseId)">
+        View Details →
+      </button>
+    </div>
+  </div>
+
+  <!-- ✅ NO SELECTION MESSAGE -->
+  <div class="no-selection" *ngIf="!selectedCourseId && !isLoading && courses.length > 0">
+    <p>👆 Click on any course card or "Enroll Now" to select it</p>
   </div>
 </div>

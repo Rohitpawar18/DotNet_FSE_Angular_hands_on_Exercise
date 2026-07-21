@@ -9,6 +9,7 @@ import {
   Validators,
   ValidationErrors,
 } from '@angular/forms';
+import { ComponentCanDeactivate } from '../../guards/unsaved-changes-guard';
 
 @Component({
   selector: 'app-reactive-enrollment-form',
@@ -17,7 +18,7 @@ import {
   templateUrl: './reactive-enrollment-form.html',
   styleUrl: './reactive-enrollment-form.css',
 })
-export class ReactiveEnrollmentFormComponent implements OnInit {
+export class ReactiveEnrollmentFormComponent implements OnInit, ComponentCanDeactivate {
   enrollForm!: FormGroup;
 
   // ============ FORM STATE ============
@@ -157,5 +158,17 @@ export class ReactiveEnrollmentFormComponent implements OnInit {
     });
     this.submitted = false;
     console.log('Form reset complete');
+  }
+
+  canDeactivate(): boolean {
+    // If form is pristine (unchanged), allow navigation
+    if (this.enrollForm.pristine) {
+      console.log('Form pristine - allowing navigation');
+      return true;
+    }
+
+    // If form is dirty (has changes), ask for confirmation
+    console.log('Form dirty - requiring confirmation');
+    return false; // Guard will show confirmation dialog
   }
 }

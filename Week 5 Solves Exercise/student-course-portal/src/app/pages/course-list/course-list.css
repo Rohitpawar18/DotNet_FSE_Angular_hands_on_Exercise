@@ -4,47 +4,103 @@
   padding: 0 2rem;
 }
 
-h2 {
+.header-section {
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.header-section h2 {
   color: #2c3e50;
-  font-size: 1.8rem;
-  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  margin: 0 0 0.5rem 0;
+  font-weight: bold;
 }
 
 .subtitle {
   color: #666;
-  margin-bottom: 2rem;
   font-size: 1rem;
+  margin: 0;
+  margin-bottom: 1.5rem;
 }
 
-/* ============ LOADING STATE STYLING ============ */
+.search-section {
+  background: linear-gradient(135deg, #f5f7fa 0%, #f0f4f8 100%);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 2px solid #e0e7ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.search-icon {
+  font-size: 1.2rem;
+  color: #3498db;
+  margin-left: 0.5rem;
+}
+
+.search-input {
+  flex: 1;
+  max-width: 500px;
+  padding: 0.75rem 1rem;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+  background: white;
+}
+
+.search-input::placeholder {
+  color: #999;
+}
+
+.search-count {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: #e8f4f8;
+  color: #3498db;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.search-hint {
+  color: #666;
+  font-size: 0.85rem;
+  margin: 0.75rem 0 0 0;
+  padding-top: 0.5rem;
+}
 
 .loading-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 3rem 2rem;
-  min-height: 400px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  border-radius: 8px;
-  animation: fadeIn 0.3s ease-out;
+  padding: 4rem 2rem;
+  gap: 1rem;
 }
-
-.loading-text {
-  color: #2c3e50;
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-top: 1rem;
-}
-
-/* ============ SPINNER ANIMATION ============ */
 
 .spinner {
+  width: 50px;
+  height: 50px;
   border: 4px solid #f3f3f3;
   border-top: 4px solid #3498db;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
   animation: spin 1s linear infinite;
 }
 
@@ -57,70 +113,139 @@ h2 {
   }
 }
 
-/* ============ COURSES GRID ============ */
+.loading-text {
+  color: #666;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.courses-section {
+  margin-bottom: 2rem;
+}
 
 .courses-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2rem;
-  margin-bottom: 2rem;
+  gap: 1.5rem;
   animation: fadeIn 0.5s ease-out;
 }
 
-/* ============ EMPTY STATE ============ */
+.clickable-card {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.clickable-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+}
 
 .no-courses-message {
-  background: #fff3cd;
-  border: 2px solid #ffc107;
+  background: #f8f9fa;
+  border: 2px dashed #ddd;
   border-radius: 8px;
-  padding: 2rem;
+  padding: 3rem 2rem;
   text-align: center;
-  color: #856404;
-  font-size: 1.1rem;
-  font-weight: bold;
-  animation: slideIn 0.3s ease-out;
+  margin: 2rem 0;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin: 0;
+}
+
+.no-courses-message h3 {
+  color: #2c3e50;
+  margin: 0;
+  font-size: 1.3rem;
 }
 
 .no-courses-message p {
+  color: #666;
   margin: 0.5rem 0;
+  font-size: 0.95rem;
 }
 
-/* ============ SELECTION INFO ============ */
+.empty-hint {
+  color: #999;
+  font-size: 0.85rem !important;
+  font-style: italic;
+}
 
 .selection-info {
-  background: #d4edda;
+  margin-top: 2rem;
+  animation: slideInUp 0.3s ease-out;
+}
+
+.info-card {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
   border: 2px solid #28a745;
   border-radius: 8px;
   padding: 1.5rem;
-  margin-top: 2rem;
-  animation: slideIn 0.3s ease-out;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
 }
 
 .info-message {
-  margin: 0;
   color: #155724;
-  font-size: 1.1rem;
-  font-weight: bold;
+  font-weight: 500;
+  margin: 0;
+  flex: 1;
 }
 
 .course-name {
-  display: block;
-  margin-top: 0.5rem;
-  font-size: 0.95rem;
+  display: inline-block;
   color: #1e7e34;
+  font-weight: bold;
+  margin-left: 0.5rem;
+}
+
+.btn-view-detail {
+  padding: 0.75rem 1.5rem;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.btn-view-detail:hover {
+  background: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.btn-view-detail:active {
+  transform: translateY(0);
 }
 
 .no-selection {
-  background: #e2e3e5;
-  border: 1px dashed #6c757d;
+  background: #e8f4f8;
+  border: 2px solid #3498db;
   border-radius: 8px;
-  padding: 1.5rem;
+  padding: 1rem;
   text-align: center;
-  color: #6c757d;
+  color: #2c3e50;
+  font-weight: 500;
   margin-top: 2rem;
 }
 
-/* ============ ANIMATIONS ============ */
+.no-selection p {
+  margin: 0;
+}
 
 @keyframes fadeIn {
   from {
@@ -131,13 +256,90 @@ h2 {
   }
 }
 
-@keyframes slideIn {
+@keyframes slideInUp {
   from {
-    transform: translateY(-10px);
+    transform: translateY(20px);
     opacity: 0;
   }
   to {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .course-list-container {
+    padding: 0 1rem;
+  }
+
+  .header-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .search-section {
+    padding: 1rem;
+  }
+
+  .search-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-input {
+    max-width: 100%;
+  }
+
+  .search-count {
+    width: 100%;
+    text-align: center;
+  }
+
+  .courses-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .info-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn-view-detail {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .course-list-container {
+    margin: 1rem auto;
+    padding: 0 0.5rem;
+  }
+
+  .header-section h2 {
+    font-size: 1.3rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .courses-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .loading-container {
+    padding: 3rem 1rem;
+  }
+
+  .no-courses-message {
+    padding: 2rem 1rem;
+  }
+
+  .empty-icon {
+    font-size: 2rem;
+  }
+
+  .search-hint {
+    font-size: 0.8rem;
   }
 }

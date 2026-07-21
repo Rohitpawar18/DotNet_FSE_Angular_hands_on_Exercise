@@ -2,25 +2,24 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router, convertToParamMap } from '@angular/router';
 import { vi } from 'vitest';
 
-import { CourseList } from './course-list';
+import { CourseDetail } from './course-detail';
 
-describe('CourseList', () => {
-  let component: CourseList;
-  let fixture: ComponentFixture<CourseList>;
+describe('CourseDetail', () => {
+  let component: CourseDetail;
+  let fixture: ComponentFixture<CourseDetail>;
   const routerSpy = {
     navigate: vi.fn(),
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CourseList],
+      imports: [CourseDetail],
       providers: [
         {
           provide: ActivatedRoute,
           useValue: {
             snapshot: {
-              queryParamMap: convertToParamMap({}),
-              paramMap: convertToParamMap({}),
+              paramMap: convertToParamMap({ id: '1' }),
             },
           },
         },
@@ -28,7 +27,7 @@ describe('CourseList', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(CourseList);
+    fixture = TestBed.createComponent(CourseDetail);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

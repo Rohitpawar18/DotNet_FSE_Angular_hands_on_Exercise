@@ -1,0 +1,38 @@
+.not-found-page {
+  min-height: 60vh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  gap: 0.75rem;
+  padding: 3rem 1.5rem;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.not-found-page h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.not-found-page p {
+  margin: 0;
+  color: #4b5563;
+}
+
+.home-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  background: #111827;
+  color: #fff;
+  text-decoration: none;
+}

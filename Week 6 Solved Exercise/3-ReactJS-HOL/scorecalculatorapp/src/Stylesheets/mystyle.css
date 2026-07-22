@@ -1,0 +1,39 @@
+.score-card {
+  border: 2px solid #3498db;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px auto;
+  width: 400px;
+  background-color: #ecf0f1;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.score-card h2 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.score-card p {
+  font-size: 16px;
+  color: #34495e;
+  margin: 10px 0;
+  line-height: 1.6;
+}
+
+.score-card strong {
+  color: #2980b9;
+}
+
+.score-card .pass {
+  color: #27ae60;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.score-card .fail {
+  color: #e74c3c;
+  font-weight: bold;
+  font-size: 18px;
+}
